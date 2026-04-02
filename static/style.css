@@ -1,0 +1,49 @@
+/* body {
+    font-family: Arial;
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+}
+
+.card {
+    margin: 20px;
+    padding: 20px;
+    background-color: #1e293b;
+    border-radius: 10px;
+}
+
+.danger {
+    color: red;
+}
+
+.normal {
+    color: lightgreen;
+}
+
+table {
+    margin: auto;
+    margin-top: 20px;
+    background-color: #1e293b;
+    color: white;
+} */
+
+
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    text-align: center;
+}
+
+.card {
+    margin: 20px;
+    padding: 20px;
+    background-color: #1e293b;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+}
+
+#alertMsg {
+    font-size: 20px;
+    margin-top: 10px;
+}

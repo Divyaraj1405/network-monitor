@@ -1,0 +1,148 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Network Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <meta http-equiv="refresh" content="5">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1>Cyber Network Monitoring Dashboard</h1>
+
+<div class="card">
+    <h2>Traffic: {{ traffic }}</h2>
+    <h2>Status: {{ status }}</h2>
+</div>
+
+<canvas id="trafficChart"></canvas>
+<h2 id="alertMsg"></h2>
+
+
+<script>
+fetch('/data')
+.then(response => response.json())
+.then(result => {
+
+    var ctx = document.getElementById('trafficChart').getContext('2d');
+
+    // 🔥 Check suspicious values
+    var bgColors = [];
+    var borderColors = [];
+
+    for (let i = 0; i < result.values.length; i++) {
+        if (result.values[i] > 80) {
+            bgColors.push('red');        // suspicious point
+            borderColors.push('red');
+        } else {
+            bgColors.push('lightgreen'); // normal
+            borderColors.push('lightgreen');
+        }
+    }
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: result.times,
+            datasets: [{
+                label: 'Traffic',
+                data: result.values,
+                pointBackgroundColor: bgColors,
+                borderColor: 'white',
+                fill: false
+            }]
+        }
+    });
+
+});
+// 🔥 Check if any suspicious exists
+let isSuspicious = result.values.some(v => v > 80);
+
+if (isSuspicious) {
+    document.getElementById("alertMsg").innerHTML = "⚠️ Sorry! Suspicious Activity Detected";
+    document.getElementById("alertMsg").style.color = "red";
+} else {
+    document.getElementById("alertMsg").innerHTML = "All Good ✅";
+}
+</script>
+
+</body>
+</html>
+ -->
+
+
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Network Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1>🚀 Cyber Network Monitoring Dashboard</h1>
+
+<div class="card">
+    <h2 id="traffic">Traffic: --</h2>
+    <h2 id="status">Status: --</h2>
+</div>
+
+<canvas id="trafficChart"></canvas>
+<h2 id="alertMsg"></h2>
+
+<script>
+let chart;
+
+// 🔥 Fetch data every 3 seconds
+function loadData() {
+    fetch('/data')
+    .then(res => res.json())
+    .then(result => {
+
+        document.getElementById("traffic").innerHTML = "Traffic: " + result.current_traffic;
+        document.getElementById("status").innerHTML = "Status: " + result.status;
+
+        // 🔥 Alert system
+        if (result.alert) {
+            document.getElementById("alertMsg").innerHTML = "⚠️ Suspicious Activity Detected";
+            document.getElementById("alertMsg").style.color = "red";
+        } else {
+            document.getElementById("alertMsg").innerHTML = "✅ All Good";
+            document.getElementById("alertMsg").style.color = "lightgreen";
+        }
+
+        // 🔥 Chart colors
+        let colors = result.values.map(v => v > 80 ? 'red' : 'lightgreen');
+
+        if (chart) chart.destroy();
+
+        const ctx = document.getElementById('trafficChart').getContext('2d');
+
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: result.times,
+                datasets: [{
+                    label: 'Traffic',
+                    data: result.values,
+                    borderColor: 'white',
+                    pointBackgroundColor: colors,
+                    fill: false
+                }]
+            }
+        });
+
+    });
+}
+
+// 🔥 Auto refresh (no page reload)
+setInterval(loadData, 3000);
+loadData();
+
+</script>
+
+</body>
+</html>
